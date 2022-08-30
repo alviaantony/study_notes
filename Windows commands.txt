@@ -1,0 +1,4 @@
+Windows commands
+-----------------
+cd rock*
+touch alpha.html -> creates a new file

@@ -1,0 +1,7 @@
+User details in memory instead of reading application.properties file.
+User implements UserDetailsInterface
+UserDetailsService extends UserDetailsInterface
+UserDetailsManager extends UserDetailsService
+InMemoryUserDetailsManager, JdbcUserDetailsManager and LdapUserDetailsManager are implementations of UserDetailsManager interface.
+For testing purposes we can use InMemoryUserDetailsManager where user credentials are stored in apllication memory.
+For production ready applications, JdbcUserDetailsManager could be used.
