@@ -1,0 +1,29 @@
+https://qburst.udemy.com/course/spring-security-zero-to-master/learn/lecture/22516340#overview
+Refer to the pdf saved in the same folder as this file.
+
+User details in memory instead of reading application.properties file.
+User implements UserDetailsInterface
+UserDetailsService extends UserDetailsInterface
+UserDetailsManager extends UserDetailsService
+InMemoryUserDetailsManager, JdbcUserDetailsManager and LdapUserDetailsManager are implementations of UserDetailsManager interface.
+For testing purposes we can use InMemoryUserDetailsManager where user credentials are stored in apllication memory.
+For production ready applications, JdbcUserDetailsManager could be used.
+
+Default spring sec process:
+User enters username and password -> Security gets the user details with the user name using loadUsersByUsername method. The password entered by the user and stored in the db are matched. If they are the same, then login succesful else fails.
+Encoding - Base64
+Encyption - Symmetrical(public key) and asymmetrical(private key)
+Hashing - algorithms, mod
+PasswordEncoder Interface -> encode, matches, upgradeEncoding methods
+Different implementations of PasswordEncoders provided by Spring Security :
+NoOpPasswordEncoder
+StandardPasswordEncoder
+Pbkdf2PasswordEncoder
+BCryptPasswordEncoder
+SCryptPasswordEncoder
+ProviderManager implements AuthenticationManager interface. 
+Spring security framework creates the authentication object after filtering and then calls the AuthenticationManager interface. In the authenticate method of ProviderManager which is the implementation of AuthenticationManager, the authenticationproviders are obtained. Using the supports method of each provider (by default, DaoAuthenticationProvider which extends AbstractUserDetailsAuthenticationProvider), it is checked if the authentication object is of the type handled by any of the providers. If so, the authenticate method of the corresponding provider is called. Inside the authenticate method (in AbstractUserDetailsAuthenticationProvider), the user entered credentials are validated. After that the authntication object is updated based on the user details obtained and isAuthentication is set to true or false.
+
+
+Skipped tutorials : 
+44-Implementing and customize the authentication provider.

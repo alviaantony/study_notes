@@ -1,0 +1,3 @@
+IntelliJ Commands
+=================
+Cntr+Shift+A -> Search for a file.
