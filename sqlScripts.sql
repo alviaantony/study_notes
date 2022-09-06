@@ -41,4 +41,13 @@ create a table -
     INSERT IGNORE INTO `customer`
     VALUES
     (NULL, 'johndoe@example.com', '$2a$12$roKWrRirk35Zvo.X4gL9veN8.6BM6hcpjzWHGi13zdwfedH.NW7LC', 'admin');
+
+    INSERT IGNORE INTO `customer`
+    VALUES
+    (NULL, 'peterparker@example.com', '$2a$12$t8Hl.iIpmwIh9jFe7N/znOLW27VcsT/P89mYrRHUk.4Yrj5Q2tsOC', 'admin');
     
+
+    //pwd - 123456
+    UPDATE `customer` set pwd = '$2a$12$e9luXH1RKaNK.kRgYnDK7OXuZ8FS8HmstZ4CWlofILFMzzr6tDOkS' where email = 'peterparker@example.com';
+
+    ALTER TABLE `customer` MODIFY pwd VARCHAR(200) ;

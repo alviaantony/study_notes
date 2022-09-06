@@ -23,7 +23,17 @@ BCryptPasswordEncoder
 SCryptPasswordEncoder
 ProviderManager implements AuthenticationManager interface. 
 Spring security framework creates the authentication object after filtering and then calls the AuthenticationManager interface. In the authenticate method of ProviderManager which is the implementation of AuthenticationManager, the authenticationproviders are obtained. Using the supports method of each provider (by default, DaoAuthenticationProvider which extends AbstractUserDetailsAuthenticationProvider), it is checked if the authentication object is of the type handled by any of the providers. If so, the authenticate method of the corresponding provider is called. Inside the authenticate method (in AbstractUserDetailsAuthenticationProvider), the user entered credentials are validated. After that the authntication object is updated based on the user details obtained and isAuthentication is set to true or false.
-
-
+Custom implementation of AuthenticationProvider to avoid the usage of UserDetailsService provided by Spring. We can authenticate the credentials based on our own logic by the custom AuthenticationProvider.
+CORS - Cross Origin Resource sharing.
+Other origins means that the URL being accessed differs from the location that the JavaScript is running from, by having:
+-> A different scheme (HTTP/HTPS)
+-> A different domain
+-> A different port
+For example a if a UI app running on one domain makes a call to an API running on a different domain, the browser block that call by default due to CORS. In monolithic applications this blocking makes sense but in microservices communication btween different domains will be needed.
+CSRF - Cross-Site Request Forgery
+A typical Cross-Site Request Forgery (CSRF or XSRF) attack aims to perform an operation in a web application on
+behalf of a user without their explicit consent. In general, it doesn't directly steal the user's identity, but it exploits
+the user to carry out an actionwithout their will.
+User logged in to an application like netflix.com. Now the user has a valid active session/cookie. User clicked a malicious link builr by a hacker in his blog. Browser will append the cookie and send to the server. The server treats it as a genuine request and resets the victim's password to the value supplies by the attcker.
+A CCRF token is a string that is tied to the user's session but is not submitted automatically. A website proceeds only when it receives a valid CSRF token along with the cookies, since there is no way for an attacker to know a user specific token, the attacker can not perform actions on user’s behalf.
 Skipped tutorials : 
-44-Implementing and customize the authentication provider.
