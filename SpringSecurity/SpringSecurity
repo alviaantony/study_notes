@@ -36,4 +36,10 @@ behalf of a user without their explicit consent. In general, it doesn't directly
 the user to carry out an actionwithout their will.
 User logged in to an application like netflix.com. Now the user has a valid active session/cookie. User clicked a malicious link builr by a hacker in his blog. Browser will append the cookie and send to the server. The server treats it as a genuine request and resets the victim's password to the value supplies by the attcker.
 A CCRF token is a string that is tied to the user's session but is not submitted automatically. A website proceeds only when it receives a valid CSRF token along with the cookies, since there is no way for an attacker to know a user specific token, the attacker can not perform actions on user’s behalf.
+CSRF token should not be transmitted within cookies.
+Authentication and Autherization
+Spring security autherization based on authority and roles.
+Matchers - MVC, ant and regex
+Filters in Spring security
+
 Skipped tutorials : 
