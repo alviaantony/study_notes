@@ -40,6 +40,48 @@ CSRF token should not be transmitted within cookies.
 Authentication and Autherization
 Spring security autherization based on authority and roles.
 Matchers - MVC, ant and regex
-Filters in Spring security
+Filters in Spring security - handle input validation, auditing, logging, tracing
+    logging.level.org.springframework.security.web.FilterChainProxy=DEBUG
+    @EnableWebSecurity(debug = true)
+By adding the above configurations, we can view the list of filters in console.
+Add filter before
+Add filter after
+Add filter At
+Cookies and sessions
+    Cookie history
+    Cookoe-based authentication:
+    The content of a cookie is secret and other websites can't read it.
+    SessionId in a cookie stored in computer's file system.
+    Logout -> login session will be invalidated in db and the server will instruct the browser to delete the cookie containing session id.
+    If we are inactive for sometime, session will expire.
+        FB -> long lived session
+        bank -> short lived session(less than 5 mins)
+    Cookie is only the medium to transmit session id(like fortune cookie)
+    Browsers will automatically send any cookies associated with a website. Cookies are send in HTTP headers.
+    Session id - randomly enerated number.
+Cookies based authentication is becoming outdated atleast for some use cases.
+Tokens:
+Suppose we are using a mobile app that tracks expenses. We login to this app wich redirects to our bank website. Here we authenticate and the bank server sends a toke to the app. Tokens are like temporary passwords. plus they have limited access to the data. For example the app can now view transactions using the token but not do money transfers. Similar to this is granting access to Google/Fb user profile to a 3rd party website.
+Popular protocols:
+OAuth
+OpenID
+JWT - JSON web token
+    Not just a temporary password.
+    Contains important info like the customer id, name, scope (like view transationc), created and expire times.
+    This info is cryptographically signed by the bank server. So tampering with the signature is impossible unless you are the bank.
+
+cookies                                             tokens
+---------                                           ---------
+Only 2 parties involved -                           Multiple parties maybe involved - You, the bank    You and the bank                                    and the app.
+Implemented as needed by the server                 Follow a standard - interoperability
+                                                    tend not to need a session on the server at all.
+                                                    eg:JWT contains all the session info.
+                                                    Limited lifetime.
+Grants access to all the information available.     Grants access to only a subset of data.
+Send by Cookie HTTP header.                         Send by authorization HTTP header. (reason being many interactions now happening outside browser)
+Session based approach - website                    Used for app for the same service
+
+By default JSessionID send as cookies by Spring security. Also in our application we have the CSRF token in cookie.
+JWT
 
 Skipped tutorials : 

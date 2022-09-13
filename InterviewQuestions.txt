@@ -1,0 +1,86 @@
+Java
+======
+Programming 
+-------------
+Sorting algorithm
+Map to list using streams
+Prime number
+String manipulation
+Threading
+
+Theory
+-------
+Collections
+SOLID principles
+Singleton design pattern
+Immutable object
+Multithreaded
+Thread pool
+Callable 
+Pass by refernce/ pass by value
+Can static method be overridden
+Design patterns
+Aggregation and composition
+Marker interface - serializable
+Enum
+Lambda use case
+Hashset or hashmap - better performance
+Internals of hashmap
+Parallel stream
+Try without catch
+Weak hashmap
+Functional interfacelog4j
+String pool and heap memory
+jvm memory issue
+linked list
+Generics
+One to many
+clone
+JMS queue
+SQL injection
+Inheritance
+Hashcode
+equals & ==
+Lexical scope and Lambda
+Abstract class and interface
+Polymorphism
+Aggregation, composition, association
+
+Hibernate
+==========
+n+1 problem solution
+Lazy loading - initialisation
+
+
+Rest API
+=========
+REST API caching
+Put/patch
+
+
+Spring
+=======
+Resolver
+Exceptions
+    @Controller-advice
+JSON response object
+Propogation - @Transactional
+Actuator
+Starter
+
+Sql
+====
+Trigger
+Index
+Second highest salary
+Materialised views
+ACID
+Pagination 
+Partition
+
+
+Extras
+=======
+MogoDB/Cassandra
+Web security - Authentication/authorization
+OAuth
