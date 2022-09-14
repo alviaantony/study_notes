@@ -82,6 +82,30 @@ Send by Cookie HTTP header.                         Send by authorization HTTP h
 Session based approach - website                    Used for app for the same service
 
 By default JSessionID send as cookies by Spring security. Also in our application we have the CSRF token in cookie.
-JWT
+Drawbacks of session id cookie approach :
+-> Nowadays browsers might not be used, apps might be. Cookies doesn't make sense in that case.
+A single app will be maintained using multiple servers and load balancer. This time if the user's first request was handled by server 1, then the session id will stored in the db associated. Next time the request maybe routed to server 2 by the load balancer and 2 doesn't know about the existing session.
+Shared cache like Reddis could be used here. But now Reddis acts as a single point of failure.
+-> Else sticky session approach could be used where the load balancer remembers which server was used before and redirects request from that user to that server. But this is not that scalable.
+-> Carrying session id between various microservices instance is also tricky.
+
+Session id -> Reference token
+JWT 
+====
+-> Value token.
+-> It is just a token and can be send via cookie like session id.
+-> JWT is for convinienec not for security.
+-> Header - algorithm used to create the signature in base 64 encoded format.
+   Payload - The info required by the server like customer id, customer name and issued at (issued time).
+   Signature - The above information encrypted using the algorithm mentioned in the header using a secret key.
+   So if I get a JWT and I tamper the payload and send, the server on creating the signature identifies that the data has been tampered with since the signature would be different for the new data.
+-> JWT is an authorization mechanism. It comes into the picture only after authentication is done.
+-> JWT is saved on the client in local storage or cookie. It needs to be send in the subsequent requests in the HTTP header (key-value pair).
+    Authorization: Bearer (JWT)
+Since the contents of JWT could be decoded by anyone, how is it safe? -> Don't include sensitive info in JWT like birthday, password etc. Add just enought info so that the user could be identified by the server.
+The JWT someone gets after authentication could be stolen by someone else and used. So JWT needs to be transmitted via HTTPS and using strong authentication sna autherization mechanisms like OAuth.
+How to disable JWT? -> Someone stole the JWT and if we want to disable them. On using sessions, logging out would kill the session. But with JWT, the JWT remains to be valid until the expiration period. One wrokaround for this si to maintain a list of invalid/blacklisted JWTs on the server.
+Disadvantages - data visible, invalidating of JWT.
+Header and payload could also be encrypted but it would use more server resources.
 
 Skipped tutorials : 
