@@ -1,0 +1,180 @@
+Spring framework
+-----------------
+Inversion of Control 
+---------------------
+IOC is a principle in software engineering which transfers the control of objects or portions of a program to a container or framework. We most often use it in the context of object-oriented programming.
+We can achieve Inversion of Control through various mechanisms such as: Strategy design pattern, Service Locator pattern, Factory pattern, and Dependency Injection (DI).
+
+Dependency injection
+---------------------
+Dependency injection is a pattern we can use to implement IoC, where the control being inverted is setting an object's dependencies.
+
+Connecting objects with other objects, or “injecting” objects into other objects, is done by an assembler rather than by the objects themselves.
+
+Here's how we would create an object dependency in traditional programming:
+
+public class Store {
+    private Item item;
+ 
+    public Store() {
+        item = new ItemImpl1();    
+    }
+}
+
+In the example above, we need to instantiate an implementation of the Item interface within the Store class itself. By using DI, we can rewrite the example without specifying the implementation of the Item that we want:
+
+public class Store {
+    private Item item;
+    public Store(Item item) {
+        this.item = item;
+    }
+}
+
+The Spring IoC Container
+-------------------------
+An IoC container is a common characteristic of frameworks that implement IoC.
+
+In the Spring framework, the interface ApplicationContext represents the IoC container. The Spring container is responsible for instantiating, configuring and assembling objects known as beans, as well as managing their life cycles.
+
+The Spring framework provides several implementations of the ApplicationContext interface: ClassPathXmlApplicationContext and FileSystemXmlApplicationContext for standalone applications, and WebApplicationContext for web applications.
+
+Constructor-Based Dependency Injection
+---------------------------------------
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public Item item1() {
+        return new ItemImpl1();
+    }
+
+    @Bean
+    public Store store() {
+        return new Store(item1());
+    }
+}
+
+The @Configuration annotation indicates that the class is a source of bean definitions. We can also add it to multiple configuration classes.
+
+Annotations
+------------
+
+@Component
+-----------
+@Component is an annotation that allows Spring to automatically detect our custom beans.
+
+In other words, without having to write any explicit code, Spring will:
+Scan our application for classes annotated with @Component
+Instantiate them and inject any specified dependencies into them
+Inject them wherever needed
+
+Spring uses the @ComponentScan annotation to actually gather them all into its ApplicationContext.
+
+If we're writing a Spring Boot application, it is helpful to know that @SpringBootApplication is a composed annotation that includes @ComponentScan. As long as our @SpringBootApplication class is at the root of our project, it will scan every @Component we define by default.
+
+@Component vs @Bean
+--------------------
+@Bean is also an annotation that Spring uses to gather beans at runtime, but it's not used at the class level. Instead, we annotate methods with @Bean so that Spring can store the method's result as a Spring bean.
+
+We'll first create a POJO that has no annotations:
+
+public class BeanExample {
+}
+Inside of our class annotated with @Configuration, we can create a bean generating method:
+@Bean
+public BeanExample beanExample() {
+    return new BeanExample();
+}
+
+BeanExample might represent a local class, or it might be an external class. It doesn't matter because we simply need to return an instance of it.
+
+There are some important implications we should note because of the differences between @Component and @Bean:
+@Component is a class-level annotation, but @Bean is at the method level, so @Component is only an option when a class's source code is editable. @Bean can always be used, but it's more verbose.
+@Component is compatible with Spring's auto-detection, but @Bean requires manual class instantiation.
+Using @Bean decouples the instantiation of the bean from its class definition. This is why we can use it to make even third-party classes into Spring beans. It also means we can introduce logic to decide which of several possible instance options for a bean to use.
+
+
+@ComponentScan Without Arguments
+---------------------------------
+With Spring, we use the @ComponentScan annotation along with the @Configuration annotation to specify the packages that we want to be scanned. @ComponentScan without arguments tells Spring to scan the current package and all of its sub-packages.
+
+@Configuration
+@ComponentScan
+public class SpringComponentScanApp {
+    private static ApplicationContext applicationContext;
+
+    @Bean
+    public ExampleBean exampleBean() {
+        return new ExampleBean();
+    }
+
+    public static void main(String[] args) {
+        applicationContext = 
+          new AnnotationConfigApplicationContext(SpringComponentScanApp.class);
+
+        for (String beanName : applicationContext.getBeanDefinitionNames()) {
+            System.out.println(beanName);
+        }
+    }
+}
+
+Note that the main application class is also a bean, as it's annotated with @Configuration, which is a @Component.
+
+We should also note that the main application class and the configuration class are not necessarily the same. If they are different, it doesn't matter where we put the main application class. Only the location of the configuration class matters, as component scanning starts from its package by default.
+
+Using @ComponentScan in a Spring Boot Application
+--------------------------------------------------
+The trick with Spring Boot is that many things happen implicitly. We use the @SpringBootApplication annotation, but it's a combination of three annotations:
+
+@Configuration
+@EnableAutoConfiguration
+@ComponentScan
+
+@ComponentScan for specific packages
+-------------------------------------
+@ComponentScan(basePackages = "com.baeldung.componentscan.springapp.animals")
+@Configuration
+public class SpringComponentScanApp {
+   private static ApplicationContext applicationContext;
+
+    @Bean
+    public ExampleBean exampleBean() {
+        return new ExampleBean();
+    }
+
+    public static void main(String[] args) {
+        applicationContext = 
+          new AnnotationConfigApplicationContext(SpringComponentScanApp.class);
+
+        for (String beanName : applicationContext.getBeanDefinitionNames()) {
+            System.out.println(beanName);
+        }
+    }
+}
+
+springComponentScanApp is created as it's a configuration passed as an argument to the AnnotationConfigApplicationContext
+exampleBean is a bean configured inside the configuration
+cat and dog are in the specified com.baeldung.componentscan.springapp.animals package
+
+All of the above-listed customizations are applicable in Spring Boot too. We can use @ComponentScan together with @SpringBootApplication and the result will be the same:
+
+@SpringBootApplication
+@ComponentScan(basePackages = "com.baeldung.componentscan.springbootapp.animals")
+
+@ComponentScan with multiple packages
+--------------------------------------
+@SpringBootApplication
+@ComponentScans({
+		@ComponentScan("com.example.controller"),
+		@ComponentScan("com.example.config")
+})
+public class Springsecsection2Application {
+
+@EnableAutoConfiguration
+-------------------------
+@EnableAutoConfiguration annotation makes Spring Boot create many beans automatically, relying on the dependencies in pom.xml file.
+
+@Configuration
+----------------
+is a @Component.
+Use @Configuration annotation on top of any class to declare that this class provides one or more @Bean methods and may be processed by the Spring container to generate bean definitions and service requests for those beans at runtime.

@@ -26,8 +26,8 @@ Enum
 Lambda use case
 Hashset or hashmap - better performance
 Internals of hashmap
-Parallel stream
-Try without catch
+Parallel stream - X
+Try without catch - X
 Weak hashmap
 Functional interfacelog4j
 String pool and heap memory

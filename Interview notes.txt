@@ -39,3 +39,103 @@ int even = number.stream().filter(x->x%2==0).reduce(0,(ans,i)-> ans+i);
 Here ans variable is assigned 0 as the initial value and i is added to it .
 
 Streams are lazy meaning the intermediate operatio ns are executed only when the terminal operation is invoked. So if we convert a collection to stream and then do map and filter, a new stream will be created. But the filter and map action will not be run yet. At a later point, when this stream.collect is called will the filter and map functions be executed.
+
+
+Sequential and parallel Streams
+--------------------------------
+Intel i7 - 4 cores, 8 threads(logical processors)
+The number of threads in the common pool is equal to the number of processor cores.
+
+Sequential streams use a single thread to process the pipeline.
+List<Integer> listOfNumbers = Arrays.asList(1, 2, 3, 4);
+listOfNumbers.stream().forEach(number ->
+    System.out.println(number + " " + Thread.currentThread().getName())
+); 
+
+The output of this sequential stream is predictable. 
+1 main
+2 main
+3 main
+4 main
+
+Parallel streams enable us to execute code in parallel on separate cores. The final result is the combination of each individual outcome.
+However, the order of execution is out of our control. It may change every time we run the program:
+
+List<Integer> listOfNumbers = Arrays.asList(1, 2, 3, 4);
+listOfNumbers.parallelStream().forEach(number ->
+    System.out.println(number + " " + Thread.currentThread().getName())
+);
+
+4 ForkJoinPool.commonPool-worker-3
+2 ForkJoinPool.commonPool-worker-5
+1 ForkJoinPool.commonPool-worker-7
+3 main
+
+List<Integer> listOfNumbers = Arrays.asList(1, 2, 3, 4);
+int sum = listOfNumbers.parallelStream().reduce(5, Integer::sum);
+assertThat(sum).isNotEqualTo(15);
+n a sequential stream, the result of this operation would be 15.
+But since the reduce operation is handled in parallel, the number five actually gets added up in every worker thread. Therefore, we need to be careful about which operations can be run in parallel.
+
+A sequential stream can be converted to a parallel one when we have actual performance requirements. Given those requirements, we should first run a performance measurement and consider parallelism as a possible optimization strategy.
+A large amount of data and many computations done per element indicate that parallelism could be a good option.
+On the other hand, a small amount of data, unevenly splitting sources, expensive merge operations and poor memory locality indicate a potential problem for parallel execution.
+Arrays are a great data source for parallel execution because they bring the best possible locality and can split cheaply and evenly.
+
+try-catch-finally
+-----------------
+Scanner scanner = null;
+try {
+    scanner = new Scanner(new File("test.txt"));
+    while (scanner.hasNext()) {
+        System.out.println(scanner.nextLine());
+    }
+} catch (FileNotFoundException e) {
+    e.printStackTrace();
+} finally {
+    if (scanner != null) {
+        scanner.close();
+    }
+}
+
+Finally block will be executed if the exception is present or not.
+
+try-with-resources: Support for try-with-resources — introduced in Java 7 — allows us to declare resources to be used in a try block with the assurance that the resources will be closed after the execution of that block.
+The resources declared need to implement the AutoCloseable interface.
+
+try (Scanner scanner = new Scanner(new File("test.txt"))) {
+    while (scanner.hasNext()) {
+        System.out.println(scanner.nextLine());
+    }
+} catch (FileNotFoundException fnfe) {
+    fnfe.printStackTrace();
+}
+
+SOLID principles
+-----------------
+Single responsibility principle:
+Each class for each responsibility.
+
+Open-closed principle:
+Classes should be opne foe for extension but closed for modification.
+The interfaces are closed for modifications, and you can provide new implementations to extend the functionality of your software.
+
+Spring security
+
+OAuth
+------
+Authorization between services.
+Terminology:
+Resource/Protected resource - Photos in Google Drive.
+Resource owner - Entity capable of granting access to the protected resource. In this case, the user holding the google account which has the photos.
+Resource server -  Server holding the protected resource. Here, Google Drive resource.
+Client - Client is the application that needs the protected resouce. In this case, the photo printing service.
+The resource server typically has coupled with it an authorization server.
+Authorization server - The server issuing access tokens to the client.
+Authorization server gives the client a short lived authorization token. The client gives this back to the authorization server. Then the authorization server also sends the client an access token.
+API call to resource server is made by the client with access token.
+OAuth flow 1 
+OAuth flow 2 - No authorization token. Just access token.
+OAuth flow 3 - Communication between microservices. Trusted application. No authentication by the client and no authorization token.
+OAUth can also be used for authentication
+
