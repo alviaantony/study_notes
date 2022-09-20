@@ -2,10 +2,56 @@ Interview notes
 =================
 Java
 =====
+Hashmap
+---------
+Key value
+If you insert duplicate key, it will replace the element of the corresponding key.  
+HashMap is similar to HashTable, but it is unsynchronized.
+Constructors in hashmap:
+HashMap() - It is the default constructor which creates an instance of HashMap with an initial capacity of 16 and load factor of 0.75.
+HashMap(int initialCapacity)
+HashMap(int initialCapacity, float loadFactor)
+HashMap(Map map)
+Methods:
+put
+remove
+Traversal in hashmap:
+for (Map.Entry<String, Integer> e : map.entrySet())
+            System.out.println("Key: " + e.getKey()
+             + " Value: " + e.getValue());
+Node<K,V>
+    int hash
+    K key
+    V value
+    Node<K,V> next
+
+Each bucket used for storing data in hashmap in the heap memory is a linked list.
+Linked list stores the data in the form of nodes. Each node consists of data and pointer to the next node.
+When we add value to hashmap,
+
+map.put("FB","A")
+-----------------
+Step 1: Find hashcode of the key. (In this case hashcode = 2236)
+Step 2: Find Bucket index.
+        hashcode & (length-1)
+        = 2236 & (16-1)
+Bucket index  = 12
+Hash-collision - When the bucket already has one or more nodes. 
+When hash collision occurs, JVM will check if the same key is already present ("Ea".equals("FB)). If present, then the node will be replaced by the new one. This is why Hashmap cannot have duplicate keys. If that key is not present, this key-value will be added as a new node to the linked list.
+Refer to image: C:\Users\QBurst\Documents\StudyMaterial\study_notes\Images\HashMap_working.jpg
+
+map.get("Ea")
+-------------
+Time complexity is very less.
+While calling the get method, JVM will calculate the hashcode of the key and then the bucket from there. Then it will traverse through each node in the bucket and check when the key gets equal to that in the node.
+
+From JAVA 8 onwards, if the number of nodes in a bucket exceeds a threshold (TREEIFY_THRESHOLD), the linked list will be converted to a tree. (Self-balancing Binary Search Tree)
+compareTo() method is used to check the order of items.
+
 Streams
 ----------
 Introduced in Java 8, the Stream API is used to process collections of objects. A stream is a sequence of objects that supports various methods which can be pipelined to produce the desired result.
-The features of Java stream are –
+The features of Java stream are –   
 
 A stream is not a data structure instead it takes input from the Collections, Arrays or I/O channels.
 Streams don’t change the original data structure, they only provide the result as per the pipelined methods.
@@ -120,6 +166,14 @@ Open-closed principle:
 Classes should be opne foe for extension but closed for modification.
 The interfaces are closed for modifications, and you can provide new implementations to extend the functionality of your software.
 
+Liskov substitution:
+If class A is a subtype of class B, we should be able to replace B with A without disrupting the behavior of our program.
+Eg: 
+Interface Car and implementations Motor car and Electric car.
+
+Interface segregation:
+
+
 Spring security
 
 OAuth
@@ -138,4 +192,89 @@ OAuth flow 1
 OAuth flow 2 - No authorization token. Just access token.
 OAuth flow 3 - Communication between microservices. Trusted application. No authentication by the client and no authorization token.
 OAUth can also be used for authentication
+
+final keyword
+---------------
+
+Lambda
+-------
+Sometimes we would need somethings and the behaviour could be varying. In such times, we can use interfaces. But then we are not really passing the behaviour(method) but something(class) that does the behaviour.
+
+public interface Greeting{
+    public void perform();
+}
+
+public class HelloWorldGreeting implements Greeting{
+    public void perform(){
+        System.out.println("Hello World");
+    }
+}
+
+public class Greeter {
+
+    public void printGreeting(Greeting greeting){
+        greeting.perform();
+    }
+
+    public static void main(String[] args){
+        Greeter greeter = new Greeter();
+        Greeting helloWorldGreeting =  new HelloWorldGreeting();
+        greeter.printGreeting(helloWorldGreeting);
+
+        Greeting greeting = () -> System.out.println("Hello World from lambda");
+        greeting.perform();
+    }
+}
+
+Data and objects act as values in java.
+eg: 
+    Student student = new Student();
+    OldStudent oldstudent = student;
+
+or
+
+    String name = "Anna";
+
+From Java 8 onwards, we can assign a block of code to variables.
+
+aBlockOfCode = public void perform(){
+                    System.out.println("Hello world");
+               }
+
+               removing unnecessary info to:
+
+aBlockOfCode = (){
+                    System.out.println("Hello world");
+               }
+
+               The actual syntax being:
+
+aBlockOfCode = () -> {
+                    System.out.println("Hello world");
+               }
+    If the body of lambda is just one line then,
+
+aBlockOfCode = () -> System.out.println("Hello world"); 
+
+The above are lambda expressions.
+
+Why lambda
+Function as value
+Type inference
+
+Lambda function type is interface.
+Implementing Thread using Runnable and lambda.
+
+Functional interface
+--------------------
+An interface with 1 abstract method.
+@FunctionalInterface - enforces that the interface is a functional interface. Helps developers notice it. Interfaces to remain functional is important in the case of lambdas.
+               
+
+Notes:
+======
+Heap memory - All objects are maintained.
+Stack memory - Object references are maintained.
+String is a final class. So it cannot be extended.
+
 

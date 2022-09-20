@@ -27,9 +27,10 @@ Lambda use case
 Hashset or hashmap - better performance
 Internals of hashmap
 Parallel stream - X
-Try without catch - X
+Try without catch 
 Weak hashmap
-Functional interfacelog4j
+Functional interface
+log4j
 String pool and heap memory
 jvm memory issue
 linked list

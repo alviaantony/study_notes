@@ -1,0 +1,13 @@
+Backend developer
+-----------------
+Language - Java
+Framework - Spring/SpringBoot
+DB - Oracle/MySql
+
+Practice many projects in this combination.
+Sep 2022 - June 2023 (10 months)
+
+Making applications better:
+----------------------------
+Learn data structures
+Learn design patterns

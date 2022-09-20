@@ -5,6 +5,14 @@ Inversion of Control
 IOC is a principle in software engineering which transfers the control of objects or portions of a program to a container or framework. We most often use it in the context of object-oriented programming.
 We can achieve Inversion of Control through various mechanisms such as: Strategy design pattern, Service Locator pattern, Factory pattern, and Dependency Injection (DI).
 
+The Spring IoC Container
+-------------------------
+An IoC container is a common characteristic of frameworks that implement IoC.
+
+In the Spring framework, the interface ApplicationContext represents the IoC container. The Spring container is responsible for instantiating, configuring and assembling objects known as beans, as well as managing their life cycles.
+
+The Spring framework provides several implementations of the ApplicationContext interface: ClassPathXmlApplicationContext and FileSystemXmlApplicationContext for standalone applications, and WebApplicationContext for web applications.
+
 Dependency injection
 ---------------------
 Dependency injection is a pattern we can use to implement IoC, where the control being inverted is setting an object's dependencies.
@@ -30,31 +38,58 @@ public class Store {
     }
 }
 
-The Spring IoC Container
--------------------------
-An IoC container is a common characteristic of frameworks that implement IoC.
-
-In the Spring framework, the interface ApplicationContext represents the IoC container. The Spring container is responsible for instantiating, configuring and assembling objects known as beans, as well as managing their life cycles.
-
-The Spring framework provides several implementations of the ApplicationContext interface: ClassPathXmlApplicationContext and FileSystemXmlApplicationContext for standalone applications, and WebApplicationContext for web applications.
-
 Constructor-Based Dependency Injection
 ---------------------------------------
+Java configuration files look similar to Java objects with some additional annotations:
+
 @Configuration
-public class AppConfig {
+@ComponentScan("com.baeldung.constructordi")
+public class Config {
 
     @Bean
-    public Item item1() {
-        return new ItemImpl1();
+    public Engine engine() {
+        return new Engine("v8", 5);
     }
 
     @Bean
-    public Store store() {
-        return new Store(item1());
+    public Transmission transmission() {
+        return new Transmission("sliding");
     }
 }
 
-The @Configuration annotation indicates that the class is a source of bean definitions. We can also add it to multiple configuration classes.
+Here we're using annotations to notify Spring runtime that this class provides bean definitions (@Bean annotation), and that the package com.baeldung.spring needs to perform a context scan for additional beans. Next, we define a Car class:
+
+@Component
+public class Car {
+
+    @Autowired
+    public Car(Engine engine, Transmission transmission) {
+        this.engine = engine;
+        this.transmission = transmission;
+    }
+}
+
+Spring will encounter our Car class while doing a package scan, and will initialize its instance by calling the @Autowired annotated constructor.
+
+By calling the @Bean annotated methods of the Config class, we will obtain instances of Engine and Transmission.
+
+As of Spring 4.3, classes with a single constructor can omit the @Autowired annotation. 
+
+Field based dependency injection
+---------------------------------
+@Controller
+public class VideoController {
+
+    //Field injection
+    @Autowired
+    private VideoRepository videoRepository;
+
+}
+
+Spring can access this variable eventhough its private. This is using reflection. Goes against the principle of Java.
+Unit testing is also hard. Will need to use reflection.
+
+Constructor-based injection happens first, then fields and then setter based.
 
 Annotations
 ------------
@@ -178,3 +213,4 @@ public class Springsecsection2Application {
 ----------------
 is a @Component.
 Use @Configuration annotation on top of any class to declare that this class provides one or more @Bean methods and may be processed by the Spring container to generate bean definitions and service requests for those beans at runtime.
+

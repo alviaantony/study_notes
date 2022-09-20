@@ -1,0 +1,37 @@
+Git 
+----
+git init
+git remote add <remote_name> <remote_repo_url>
+    eg: rit remote add origin https://github.com/alviaantony/git-test.git
+git status
+git add README.md
+git commit -m “first commit”
+git branch -M main
+git push -u origin main
+git commit -a -m "Second commit" -> Moves the file from working area to git directory directly (combines add and commit). 
+                                    Can only be applied on tracked files(ie, files in the staging area).
+git restore --staged README.md -> Unstage the changes (ie remove the changes added to staging area).
+git restore README.md -> Remove the changes from working directory.
+git push
+git config -l
+git config --global user.name "My new name"
+git config --global user.email "My new email"
+git log
+git log -p -> Detailed log.
+git log --oneline -> Info in one line.
+git log --stat
+git show 24df6c3ba235d19f18f0611b5cde67f7ab69f382
+git revert HEAD -> To revert the last commit.
+git log -p -2 -> To view details of only the last 2 commits.
+git revert <commit id> -> To move to a particular commit.
+git branch -> Lists all branches.
+git branch <branchname> -> Creates a new branch.
+git checkout <branchname> -> Moves to that branch.
+git checkout -b <branchname> -> will create a new branch with that name and moves to it.
+git branch -d <banchname>
+git merge my_new_branch -> Merges the branch histories together. We get the changes made to my_new_branch in main branch.
+(running the command after checking out to main branch)
+git fork -> Feature provided by third parties like github. A serverside copy of someone's repository could be added to our account in 
+            github. We can then clone this to local, make modifications and push. Once we are happy with the changes maybe we can raise
+            pull request to merge this to the original someone else's repository and that person may approve. 
+            When we want less collaboration.
